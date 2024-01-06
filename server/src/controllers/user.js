@@ -1,15 +1,12 @@
-const router = require("express").Router();
-// const { User } = require("../models/user.js");
+const userRouter = require("express").Router();
 
-router.post("/create", async (req, res) => {
+userRouter.post("/create", async (req, res) => {
   const userData = req.body;
-  console.log(userData);
+  console.log("userData: ", userData);
   res.json(userData);
+  //   const { User } = require("../models/user.js");
+  //   const newUser = await User.create(userData);
+  //   console.log("newUser: ", newUser);
 });
 
-// router.get('/', async (req, res) => {
-//     const users = await User.findAll()
-//     res.json(users)
-// })
-
-module.exports = router;
+module.exports = { userRouter };
