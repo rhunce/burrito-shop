@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/index.js"
+    "startDB": "nodemon src/models/index.js",
+    "startServer": "nodemon src/index.js"
   },
   "author": "Raymond Hunce",
   "license": "ISC",
