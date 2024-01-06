@@ -4,39 +4,53 @@ USER
 - email: PK
 - firstName: string
 - lastName: string
-- password: string
+- password: string *** (TODO) ***
 - type: Enum(MANAGER, EMPLOYEE)
 
-ITEM
+PRODUCT
 - id: PK
 - name: string
 - description: string
-- variants: Array<{ name: string, price: float }>
 - category_id: FK
 
-ITEM_OPTION
-- id: PK
-- item_id: FK
-- option_id: FK
-
-OPTION
+VARIANT
 - id: PK
 - name: string
-- values: Array<string>
-- type: Enum(DROPDOWN, MULTISELECT)
+- price: float
+- product_id: FK
 
 CATEGORY
 - id: PK
 - name: string
 
+OPTION
+- id: PK
+- name: string
+- type: Enum(DROPDOWN, MULTISELECT)
+
+OPTIONVALUE
+- id: PK
+- name: string
+- option_id: FK
+
+PRODUCT_OPTION (Join Table)
+- id: PK
+- product_id: FK
+- option_id: FK
+
 ORDER
 - id: PK
 - status: Enum(UNFULFILLED, FULFILLED)
-- items: Array<{ 
-    item_id: FK, 
-    quantity: int, 
-    options: Array<{ option_id: FK, values: Array<string> }> 
-}>
+
+ORDERLINE
+- id: PK
+- order_id: FK
+- quantity: int
+
+ORDERLINE_OPTIONVALUE (Join Table)
+- id: PK
+- orderline_id: FK
+- optionvalue_id: FK
 
 ****************************************** API ******************************************
 

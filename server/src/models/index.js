@@ -5,7 +5,7 @@ const sequelize = new Sequelize("burrito_shop", "postgres", "postgres", {
   dialect: "postgres",
 });
 
-// USER MODEL
+// *************** USER MODEL ***************
 class User extends Model {}
 User.init(
   {
@@ -20,26 +20,35 @@ User.init(
       type: DataTypes.ENUM("MANAGER", "EMPLOYEE"),
       defaultValue: "EMPLOYEE",
     },
+    // TODO: PASSWORD
   },
   { sequelize }
 );
 
-// ITEM MODEL
-class Item extends Model {}
-Item.init(
+// *************** PRODUCT MODEL ***************
+class Product extends Model {}
+Product.init(
   {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
     description: DataTypes.STRING,
-    // variants: DataTypes.STRING // TODO
-    // category FK // TODO
   },
   { sequelize }
 );
 
-// CATEGORY MODEL
+// *************** VARIANT MODEL ***************
+class Variant extends Model {}
+Variant.init(
+  {
+    name: DataTypes.STRING,
+    price: DataTypes.DECIMAL(10, 2),
+  },
+  { sequelize }
+);
+
+// *************** CATEGORY MODEL ***************
 class Category extends Model {}
 Category.init(
   {
@@ -51,12 +60,73 @@ Category.init(
   { sequelize }
 );
 
-(async () => {
-  // Foreign Key Relationships
-  Category.hasMany(Item);
-  Item.belongsTo(Category);
+// *************** OPTION MODEL ***************
+class Option extends Model {}
+Option.init(
+  {
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    optionType: DataTypes.ENUM("DROPDOWN", "MULTISELECT"),
+  },
+  { sequelize }
+);
 
+// *************** OPTION VALUE MODEL ***************
+class OptionValue extends Model {}
+OptionValue.init(
+  {
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+  },
+  { sequelize }
+);
+
+// *************** ORDER MODEL ***************
+class Order extends Model {}
+Order.init(
+  {
+    status: DataTypes.ENUM("UNFULFILLED", "FULFILLED"),
+  },
+  { sequelize }
+);
+
+// *************** ORDERLINE MODEL ***************
+class OrderLine extends Model {}
+OrderLine.init(
+  {
+    quantity: DataTypes.INTEGER,
+  },
+  { sequelize }
+);
+
+(async () => {
+  // ***** CREATE TABLE ASSOCIATIONS *****
+  Category.hasMany(Product);
+  Product.belongsTo(Category);
+
+  Product.hasMany(Variant);
+  Variant.belongsTo(Product);
+
+  Option.hasMany(OptionValue);
+  OptionValue.belongsTo(Option);
+
+  Order.hasMany(OrderLine);
+  OrderLine.belongsTo(Order);
+
+  Product.belongsToMany(Option, { through: "Product_Option" });
+  Option.belongsToMany(Product, { through: "Product_Option" });
+
+  OrderLine.belongsToMany(OptionValue, { through: "OrderLine_OptionValue" });
+  OptionValue.belongsToMany(OrderLine, { through: "OrderLine_OptionValue" });
+
+  // ***** SYNC DB WITH TABLES *****
   await sequelize.sync({ force: true });
+
+  // ***** SEED DB *****
   //   const rayUser = await User.create({
   //     firstName: "Raymond",
   //     lastName: "Hunce",
@@ -66,4 +136,4 @@ Category.init(
   //   console.log("RAY USER: ", rayUser.toJSON());
 })();
 
-module.exports = { User, Item };
+module.exports = { User };
