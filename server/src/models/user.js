@@ -18,11 +18,11 @@ const User = sequelize.define(
     type: {
       type: DataTypes.ENUM("MANAGER", "EMPLOYEE"),
     },
-    password: {
-      field: "user_password",
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
+    // password: {
+    //   field: "user_password",
+    //   type: DataTypes.STRING,
+    //   allowNull: true,
+    // },
   }
   // {
   //   hooks: {
