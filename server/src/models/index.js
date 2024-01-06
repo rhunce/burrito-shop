@@ -1,4 +1,12 @@
 const { Sequelize, Model, DataTypes } = require("sequelize");
+const {
+  createUsers,
+  createProducts,
+  createVariants,
+  createCategories,
+  createOptions,
+  createOptionValues,
+} = require("./utils.js");
 
 const sequelize = new Sequelize("burrito_shop", "postgres", "postgres", {
   host: "localhost",
@@ -103,37 +111,34 @@ OrderLine.init(
   { sequelize }
 );
 
-(async () => {
-  // ***** CREATE TABLE ASSOCIATIONS *****
-  Category.hasMany(Product);
-  Product.belongsTo(Category);
+// (async () => {
+//   // ***** CREATE TABLE ASSOCIATIONS *****
+//   Category.hasMany(Product);
+//   Product.belongsTo(Category);
 
-  Product.hasMany(Variant);
-  Variant.belongsTo(Product);
+//   Product.hasMany(Variant);
+//   Variant.belongsTo(Product);
 
-  Option.hasMany(OptionValue);
-  OptionValue.belongsTo(Option);
+//   Option.hasMany(OptionValue);
+//   OptionValue.belongsTo(Option);
 
-  Order.hasMany(OrderLine);
-  OrderLine.belongsTo(Order);
+//   Order.hasMany(OrderLine);
+//   OrderLine.belongsTo(Order);
 
-  Product.belongsToMany(Option, { through: "Product_Option" });
-  Option.belongsToMany(Product, { through: "Product_Option" });
+//   Product.belongsToMany(Option, { through: "Product_Option" });
+//   Option.belongsToMany(Product, { through: "Product_Option" });
 
-  OrderLine.belongsToMany(OptionValue, { through: "OrderLine_OptionValue" });
-  OptionValue.belongsToMany(OrderLine, { through: "OrderLine_OptionValue" });
+//   OrderLine.belongsToMany(OptionValue, { through: "OrderLine_OptionValue" });
+//   OptionValue.belongsToMany(OrderLine, { through: "OrderLine_OptionValue" });
 
-  // ***** SYNC DB WITH TABLES *****
-  await sequelize.sync({ force: true });
+//   // ***** SYNC DB WITH TABLES *****
+//   await sequelize.sync();
 
-  // ***** SEED DB *****
-  //   const rayUser = await User.create({
-  //     firstName: "Raymond",
-  //     lastName: "Hunce",
-  //     email: "hunce18c@gmail.com",
-  //     type: "MANAGER",
-  //   });
-  //   console.log("RAY USER: ", rayUser.toJSON());
-})();
-
-module.exports = { User };
+//   // ***** SEED DB *****
+//   await createUsers(User);
+//   await createProducts(Product);
+//   await createVariants(Variant);
+//   await createCategories(Category);
+//   await createOptions(Option);
+//   await createOptionValues(OptionValue);
+// })();
