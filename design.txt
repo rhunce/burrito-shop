@@ -1,0 +1,163 @@
+****************************************** ENTITIES ******************************************
+
+USER
+- email: PK
+- firstName: string
+- lastName: string
+- password: string
+- type: Enum(MANAGER, EMPLOYEE)
+
+ITEM
+- id: PK
+- name: string
+- description: string
+- variants: Array<{ name: string, price: float }>
+- category_id: FK
+
+ITEM_OPTION
+- id: PK
+- item_id: FK
+- option_id: FK
+
+OPTION
+- id: PK
+- name: string
+- values: Array<string>
+- type: Enum(DROPDOWN, MULTISELECT)
+
+CATEGORY
+- id: PK
+- name: string
+
+ORDER
+- id: PK
+- status: Enum(UNFULFILLED, FULFILLED)
+- items: Array<{ 
+    item_id: FK, 
+    quantity: int, 
+    options: Array<{ option_id: FK, values: Array<string> }> 
+}>
+
+****************************************** API ******************************************
+
+GET Items
+- Args:
+    - first: int
+    - from: int
+    - category: item_id!
+- Response:
+    - Array<Item>
+
+GET Orders
+- Args:
+    - first: int
+    - from: int
+- Response:
+    - Array<Order>
+
+GET Order
+- Args:
+    - id: order_id!
+- Response: 
+    - Order
+
+POST CreateOrder
+- Args:
+    - items: Array<OrderItems>
+- Response:
+    - Order
+
+POST UpdateOrder
+- Args:
+    - id: ID!
+    - status: Enum(UNFULFILLED, FULFILLED)
+- Response:
+    - Order
+
+Type OrderItems = {
+    item_id: ID
+    quantity: int
+    options: Array<OptionItems>
+}
+
+Type OptionItems = {
+    option_id: ID
+    values: Array<string>
+}
+
+GET Categories
+- Args:
+    - first: int
+    - from: int
+- Response:
+    - Array<Category>
+
+POST Category
+- Args:
+    - id: ID!
+    - name: string
+- Response:
+    - Category
+
+DELETE Category
+- Args:
+    - id: ID!
+- Response:
+    - isDeleted: bool
+
+GET Users
+- Args:
+    - first: int
+    - from: int
+- Response:
+    - Array<User>
+
+POST User
+- Args:
+    - email: string
+    - firstName: string
+    - lastName: string
+    - password: string
+    - type: Enum(MANAGER, EMPLOYEE)
+- Response:
+    - User
+
+DELETE User
+- Args:
+    - id: ID!
+- Response:
+    - isDeleted: bool
+
+****************************************** FRONT END ******************************************
+NOT LOGGED IN
+- Customer
+- Logo/Banner
+- Horizontal bar containing Categories
+- When category clicked, routed to list page for items in that category
+- Can click item to go to item detail page
+- In Item Detail Page, can see and select options, choose quantity, and click ADD TO CART
+- GO TO CART button allows user to view current cart details
+- CREATE ORDER button creates the order and gives user confirmation message and Order Number
+
+LOGGED IN (MANAGER)
+- Can create Users (MANAGER or EMPLOYEE)
+- Can create Categories
+- Can create Options
+- Can create Items
+
+LOGGED IN (EMPLOYEE)
+- Logo/Banner
+- Sees list of UNFULFILLED orders
+- See Order Detail page
+- Can convert order to FULFILLED
+
+PAGES
+- Home
+- Item List Page
+- Item Detail List Page
+- Order List Page
+- Order Detail Page
+- User Creation Page
+- Category Creation Page
+- Option Creation Page
+- Item Creation Page
