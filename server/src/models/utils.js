@@ -34,6 +34,18 @@ async function getProduct(productId) {
   const product = await Product.findByPk(productId);
   return product;
 }
+
+// VARIANTS UTILS
+async function getVariants() {
+  const variants = await Variant.findAll();
+  return variants;
+}
+
+async function getVariant(variantId) {
+  const variant = await Variant.findByPk(variantId);
+  return variant;
+}
+
 // ORDERS UTILS
 async function getOrders() {
   const orders = await Order.findAll();
@@ -118,4 +130,6 @@ module.exports = {
   getCategory,
   getUsers,
   getUser,
+  getVariants,
+  getVariant,
 };
