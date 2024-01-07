@@ -54,14 +54,20 @@ ORDERLINE_OPTIONVALUE (Join Table)
 
 ****************************************** API ******************************************
 
-*** (TODO) ***
 GET /products
+*** (TODO: Pagination) ***
 - Args:
     - first: int
     - from: int
     - category: item_id!
 - Response:
-    - Array<Item>
+    - Array<Product>
+
+GET /product/:productId
+- Args:
+    - id: ID!
+- Response:
+    - Product
 
 *** (TODO) ***
 GET Orders

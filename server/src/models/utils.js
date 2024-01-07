@@ -12,4 +12,9 @@ async function getProducts() {
   return products;
 }
 
-module.exports = { createUser, getProducts };
+async function getProduct(productId) {
+  const product = await Product.findByPk(productId);
+  return product;
+}
+
+module.exports = { createUser, getProducts, getProduct };

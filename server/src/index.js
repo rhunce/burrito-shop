@@ -9,7 +9,7 @@ const PORT = 3000;
 app.use(express.json());
 
 // Routes
-app.get("/", (req, res) => res.json({ message: "Hello World" }));
+// app.get("/", (req, res) => res.json({ message: "Hello World" }));
 app.use("/users", usersRouter);
 app.use("/products", productsRouter);
 
