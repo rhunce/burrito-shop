@@ -1,13 +1,13 @@
 const { Sequelize, Model, DataTypes } = require("sequelize");
-const {
-  createUsers,
-  createProducts,
-  createVariants,
-  createCategories,
-  createOptions,
-  createOptionValues,
-  createProductOptions,
-} = require("./seed/utils.js");
+// const {
+//   createUsers,
+//   createProducts,
+//   createVariants,
+//   createCategories,
+//   createOptions,
+//   createOptionValues,
+//   createProductOptions,
+// } = require("./seed/utils.js");
 
 const sequelize = new Sequelize("burrito_shop", "postgres", "postgres", {
   host: "localhost",
@@ -200,4 +200,5 @@ module.exports = {
   Order,
   OrderLine,
   OrderLineOptionValue,
+  Category,
 };

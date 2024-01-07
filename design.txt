@@ -103,7 +103,6 @@ POST UpdateOrder
 - Response:
     - Order
 
-*** (TODO) ***
 GET Categories
 - Args:
     - first: int

@@ -5,6 +5,7 @@ const {
   Order,
   OrderLine,
   OrderLineOptionValue,
+  Category,
 } = require("../models/index.js");
 
 // USERS UTILS
@@ -69,7 +70,7 @@ async function updateOrderTotalPrice(order, orderLines) {
   await order.update({ totalPrice });
 }
 
-// HELPERS
+// ORDER HELPERS
 async function getTotalPriceFromOrderLines(orderLines) {
   let totalPrice = 0;
   for (const { dataValues: orderLine } of orderLines) {
@@ -82,6 +83,12 @@ async function getTotalPriceFromOrderLines(orderLines) {
   return totalPrice;
 }
 
+// CATEGORIES UTILS
+async function getCategories() {
+  const categories = await Category.findAll();
+  return categories;
+}
+
 module.exports = {
   createUser,
   getProducts,
@@ -92,4 +99,5 @@ module.exports = {
   createOrderLine,
   createOrderLineOptionValue,
   updateOrderTotalPrice,
+  getCategories,
 };
