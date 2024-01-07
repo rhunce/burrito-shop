@@ -1,10 +1,10 @@
-const userRouter = require("express").Router();
+const usersRouter = require("express").Router();
 const { createUser } = require("../models/utils.js");
 const bcrypt = require("bcrypt");
 
 const SALT_ROUNDS = 10;
 
-userRouter.post("/create", async (req, res) => {
+usersRouter.post("/create", async (req, res) => {
   const userData = req.body;
   const { password } = userData;
   bcrypt.hash(password, SALT_ROUNDS, async function (err, hash) {
@@ -14,4 +14,4 @@ userRouter.post("/create", async (req, res) => {
   });
 });
 
-module.exports = { userRouter };
+module.exports = { usersRouter };

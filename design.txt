@@ -4,7 +4,7 @@ USER
 - email: PK
 - firstName: string
 - lastName: string
-- password: string *** (TODO) ***
+- password: string
 - type: Enum(MANAGER, EMPLOYEE)
 
 PRODUCT
@@ -54,7 +54,8 @@ ORDERLINE_OPTIONVALUE (Join Table)
 
 ****************************************** API ******************************************
 
-GET Items
+*** (TODO) ***
+GET /products
 - Args:
     - first: int
     - from: int
@@ -62,6 +63,7 @@ GET Items
 - Response:
     - Array<Item>
 
+*** (TODO) ***
 GET Orders
 - Args:
     - first: int
@@ -69,18 +71,21 @@ GET Orders
 - Response:
     - Array<Order>
 
+*** (TODO) ***
 GET Order
 - Args:
     - id: order_id!
 - Response: 
     - Order
 
+*** (TODO) ***
 POST CreateOrder
 - Args:
     - items: Array<OrderItems>
 - Response:
     - Order
 
+*** (TODO) ***
 POST UpdateOrder
 - Args:
     - id: ID!
@@ -88,17 +93,20 @@ POST UpdateOrder
 - Response:
     - Order
 
+*** (TODO) ***
 Type OrderItems = {
     item_id: ID
     quantity: int
     options: Array<OptionItems>
 }
 
+*** (TODO) ***
 Type OptionItems = {
     option_id: ID
     values: Array<string>
 }
 
+*** (TODO) ***
 GET Categories
 - Args:
     - first: int
@@ -106,6 +114,7 @@ GET Categories
 - Response:
     - Array<Category>
 
+*** (TODO) ***
 POST Category
 - Args:
     - id: ID!
@@ -113,12 +122,14 @@ POST Category
 - Response:
     - Category
 
+*** (TODO) ***
 DELETE Category
 - Args:
     - id: ID!
 - Response:
     - isDeleted: bool
 
+*** (TODO) ***
 GET Users
 - Args:
     - first: int
@@ -126,7 +137,7 @@ GET Users
 - Response:
     - Array<User>
 
-POST User
+POST /user/create
 - Args:
     - email: string
     - firstName: string
@@ -136,6 +147,7 @@ POST User
 - Response:
     - User
 
+*** (TODO) ***
 DELETE User
 - Args:
     - id: ID!

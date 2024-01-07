@@ -143,4 +143,4 @@ OrderLine.init(
 //   await createOptionValues(OptionValue);
 // })();
 
-module.exports = { User };
+module.exports = { User, Product };

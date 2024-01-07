@@ -1,8 +1,15 @@
-const { User } = require("../models/index.js");
+const { User, Product } = require("../models/index.js");
 
+// USER UTILS
 async function createUser(userData) {
-  const newUser = User.create(userData);
+  const newUser = await User.create(userData);
   return newUser;
 }
 
-module.exports = { createUser };
+// PRODUCT UTILS
+async function getProducts() {
+  const products = await Product.findAll();
+  return products;
+}
+
+module.exports = { createUser, getProducts };
