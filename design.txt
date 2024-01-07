@@ -84,7 +84,6 @@ GET /orders/:orderId
 - Response: 
     - Order
 
-*** (TODO) ***
 POST CreateOrder
 - Args:
     - items: Array<OrderItems>
@@ -97,20 +96,12 @@ Type OrderItems = {
     options: Array<optionValue_id>
 }
 
-*** (TODO) ***
 POST UpdateOrder
 - Args:
     - id: ID!
     - status: Enum(UNFULFILLED, FULFILLED)
 - Response:
     - Order
-
-
-*** (TODO) ***
-Type OptionItems = {
-    option_id: ID
-    values: Array<string>
-}
 
 *** (TODO) ***
 GET Categories

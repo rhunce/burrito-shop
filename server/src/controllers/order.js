@@ -37,4 +37,12 @@ orderRouter.post("/", async (req, res) => {
   res.json(order);
 });
 
+// PUT
+orderRouter.put("/", async (req, res) => {
+  const { orderId, status } = req.body;
+  const order = await getOrder(orderId);
+  await order.update({ status });
+  res.json(order);
+});
+
 module.exports = { orderRouter };
