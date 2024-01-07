@@ -9,7 +9,7 @@ const { categoryRouter } = require("./controllers/category.js");
 const { usersRouter } = require("./controllers/users.js");
 
 const app = express();
-const PORT = 3000;
+const PORT = 8000;
 
 // Middleware
 app.use(express.json());
