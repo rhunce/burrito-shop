@@ -89,6 +89,11 @@ async function getCategories() {
   return categories;
 }
 
+async function getCategory(categoryId) {
+  const category = await Category.findByPk(categoryId);
+  return category;
+}
+
 module.exports = {
   createUser,
   getProducts,
@@ -100,4 +105,5 @@ module.exports = {
   createOrderLineOptionValue,
   updateOrderTotalPrice,
   getCategories,
+  getCategory,
 };

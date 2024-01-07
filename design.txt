@@ -110,11 +110,9 @@ GET Categories
 - Response:
     - Array<Category>
 
-*** (TODO) ***
-POST Category
+GET Category
 - Args:
-    - id: ID!
-    - name: string
+    - id: ID
 - Response:
     - Category
 

@@ -5,6 +5,7 @@ const { productRouter } = require("./controllers/product.js");
 const { ordersRouter } = require("./controllers/orders.js");
 const { orderRouter } = require("./controllers/order.js");
 const { categoriesRouter } = require("./controllers/categories.js");
+const { categoryRouter } = require("./controllers/category.js");
 
 const app = express();
 const PORT = 3000;
@@ -19,6 +20,7 @@ app.use("/products", productsRouter);
 app.use("/product", productRouter);
 app.use("/orders", ordersRouter);
 app.use("/order", orderRouter);
+app.use("/category", categoryRouter);
 app.use("/categories", categoriesRouter);
 
 // Listen
