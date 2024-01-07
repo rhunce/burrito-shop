@@ -1,12 +1,13 @@
 const { Sequelize, Model, DataTypes } = require("sequelize");
-// const {
-//   createUsers,
-//   createProducts,
-//   createVariants,
-//   createCategories,
-//   createOptions,
-//   createOptionValues,
-// } = require("./seed/utils.js");
+const {
+  createUsers,
+  createProducts,
+  createVariants,
+  createCategories,
+  createOptions,
+  createOptionValues,
+  createProductOptions,
+} = require("./seed/utils.js");
 
 const sequelize = new Sequelize("burrito_shop", "postgres", "postgres", {
   host: "localhost",
@@ -42,6 +43,7 @@ Product.init(
       allowNull: false,
     },
     description: DataTypes.STRING,
+    categoryId: DataTypes.INTEGER,
   },
   { sequelize }
 );
@@ -52,6 +54,7 @@ Variant.init(
   {
     name: DataTypes.STRING,
     price: DataTypes.DECIMAL(10, 2),
+    productId: DataTypes.INTEGER,
   },
   { sequelize }
 );
@@ -89,6 +92,7 @@ OptionValue.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    optionId: DataTypes.INTEGER,
   },
   { sequelize }
 );
@@ -98,6 +102,7 @@ class Order extends Model {}
 Order.init(
   {
     status: DataTypes.ENUM("UNFULFILLED", "FULFILLED"),
+    totalPrice: DataTypes.DECIMAL(10, 2),
   },
   { sequelize }
 );
@@ -107,40 +112,81 @@ class OrderLine extends Model {}
 OrderLine.init(
   {
     quantity: DataTypes.INTEGER,
+    productId: DataTypes.INTEGER,
+    orderId: DataTypes.INTEGER,
   },
   { sequelize }
 );
 
-// (async () => {
-//   // ***** CREATE TABLE ASSOCIATIONS *****
-//   Category.hasMany(Product);
-//   Product.belongsTo(Category);
+// *************** PRODUCTOPTION MODEL ***************
+class ProductOption extends Model {}
+ProductOption.init(
+  {
+    productId: DataTypes.INTEGER,
+    optionId: DataTypes.INTEGER,
+  },
+  { sequelize }
+);
 
-//   Product.hasMany(Variant);
-//   Variant.belongsTo(Product);
+// *************** ORDERLINEOPTIONVALUE MODEL ***************
+class OrderLineOptionValue extends Model {}
+OrderLineOptionValue.init(
+  {
+    orderLineId: DataTypes.INTEGER,
+    optionValueId: DataTypes.INTEGER,
+  },
+  { sequelize }
+);
 
-//   Option.hasMany(OptionValue);
-//   OptionValue.belongsTo(Option);
+async () => {
+  // ***** CREATE TABLE ASSOCIATIONS *****
+  // One-to-Many
+  Category.hasMany(Product, { foreignKey: "categoryId" });
+  Product.belongsTo(Category, { foreignKey: "categoryId" });
 
-//   Order.hasMany(OrderLine);
-//   OrderLine.belongsTo(Order);
+  Product.hasMany(Variant, { foreignKey: "productId" });
+  Variant.belongsTo(Product, { foreignKey: "productId" });
 
-//   Product.belongsToMany(Option, { through: "Product_Option" });
-//   Option.belongsToMany(Product, { through: "Product_Option" });
+  Option.hasMany(OptionValue, { foreignKey: "optionId" });
+  OptionValue.belongsTo(Option, { foreignKey: "optionId" });
 
-//   OrderLine.belongsToMany(OptionValue, { through: "OrderLine_OptionValue" });
-//   OptionValue.belongsToMany(OrderLine, { through: "OrderLine_OptionValue" });
+  Order.hasMany(OrderLine, { foreignKey: "orderId" });
+  OrderLine.belongsTo(Order, { foreignKey: "orderId" });
 
-//   // ***** SYNC DB WITH TABLES *****
-//   await sequelize.sync({ alter: true });
+  Product.hasMany(OrderLine, { foreignKey: "productId" });
+  OrderLine.belongsTo(Product, { foreignKey: "productId" });
 
-//   // ***** SEED DB *****
-//   await createUsers(User);
-//   await createProducts(Product);
-//   await createVariants(Variant);
-//   await createCategories(Category);
-//   await createOptions(Option);
-//   await createOptionValues(OptionValue);
-// })();
+  // Many-to-Many
+  Product.belongsToMany(Option, {
+    through: ProductOption,
+    foreignKey: "productId",
+  });
+  Option.belongsToMany(Product, {
+    through: ProductOption,
+    foreignKey: "optionId",
+  });
 
-module.exports = { User, Product };
+  OrderLine.belongsToMany(OptionValue, {
+    through: OrderLineOptionValue,
+    foreignKey: "orderLineId",
+  });
+  OptionValue.belongsToMany(OrderLine, {
+    through: OrderLineOptionValue,
+    foreignKey: "optionValueId",
+  });
+
+  // ***** SYNC DB WITH TABLES *****
+  await sequelize.sync({ alter: true });
+
+  // ***** SEED DB *****
+  // await createUsers(User);
+  // await createCategories(Category);
+  // await createProducts(Product);
+  // await createVariants(Variant);
+  // await createOptions(Option);
+  // await createOptionValues(OptionValue);
+  // await createProductOptions(ProductOption);
+};
+// ();
+
+module.exports = { User, Product, Order, OrderLine };

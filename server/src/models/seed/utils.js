@@ -5,6 +5,7 @@ const {
   CATEGORIES_DATA,
   OPTIONS_DATA,
   OPTIONVALUES_DATA,
+  PRODUCTOPTION_DATA,
 } = require("./fixtures.js");
 
 async function createUsers(userModel) {
@@ -43,6 +44,12 @@ async function createOptionValues(optionValueModel) {
   }
 }
 
+async function createProductOptions(productOptionModel) {
+  for (const productOption of PRODUCTOPTION_DATA) {
+    await productOptionModel.create(productOption);
+  }
+}
+
 module.exports = {
   createUsers,
   createProducts,
@@ -50,4 +57,5 @@ module.exports = {
   createCategories,
   createOptions,
   createOptionValues,
+  createProductOptions,
 };

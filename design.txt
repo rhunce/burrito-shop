@@ -45,6 +45,7 @@ ORDER
 ORDERLINE
 - id: PK
 - order_id: FK
+- product_id: FK
 - quantity: int
 
 ORDERLINE_OPTIONVALUE (Join Table)
@@ -69,16 +70,15 @@ GET /product/:productId
 - Response:
     - Product
 
-*** (TODO) ***
-GET Orders
+GET /orders
+*** (TODO: Pagination) ***
 - Args:
     - first: int
     - from: int
 - Response:
     - Array<Order>
 
-*** (TODO) ***
-GET Order
+GET /orders/:orderId
 - Args:
     - id: order_id!
 - Response: 
@@ -91,6 +91,12 @@ POST CreateOrder
 - Response:
     - Order
 
+Type OrderItems = {
+    product_id: ID
+    quantity: int
+    options: Array<optionValue_id>
+}
+
 *** (TODO) ***
 POST UpdateOrder
 - Args:
@@ -99,12 +105,6 @@ POST UpdateOrder
 - Response:
     - Order
 
-*** (TODO) ***
-Type OrderItems = {
-    item_id: ID
-    quantity: int
-    options: Array<OptionItems>
-}
 
 *** (TODO) ***
 Type OptionItems = {
@@ -129,19 +129,19 @@ POST Category
     - Category
 
 *** (TODO) ***
-DELETE Category
-- Args:
-    - id: ID!
-- Response:
-    - isDeleted: bool
-
-*** (TODO) ***
 GET Users
 - Args:
     - first: int
     - from: int
 - Response:
     - Array<User>
+
+*** (TODO) ***
+GET User
+- Args:
+    - user_id: ID!
+- Response:
+    - User
 
 POST /user/create
 - Args:
@@ -152,13 +152,6 @@ POST /user/create
     - type: Enum(MANAGER, EMPLOYEE)
 - Response:
     - User
-
-*** (TODO) ***
-DELETE User
-- Args:
-    - id: ID!
-- Response:
-    - isDeleted: bool
 
 ****************************************** FRONT END ******************************************
 NOT LOGGED IN
