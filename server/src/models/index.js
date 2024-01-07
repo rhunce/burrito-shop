@@ -112,7 +112,7 @@ class OrderLine extends Model {}
 OrderLine.init(
   {
     quantity: DataTypes.INTEGER,
-    productId: DataTypes.INTEGER,
+    variantId: DataTypes.INTEGER,
     orderId: DataTypes.INTEGER,
   },
   { sequelize }
@@ -132,61 +132,72 @@ ProductOption.init(
 class OrderLineOptionValue extends Model {}
 OrderLineOptionValue.init(
   {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
     orderLineId: DataTypes.INTEGER,
     optionValueId: DataTypes.INTEGER,
   },
   { sequelize }
 );
 
-async () => {
-  // ***** CREATE TABLE ASSOCIATIONS *****
-  // One-to-Many
-  Category.hasMany(Product, { foreignKey: "categoryId" });
-  Product.belongsTo(Category, { foreignKey: "categoryId" });
+// (async () => {
+//   // ***** CREATE TABLE ASSOCIATIONS *****
+//   // One-to-Many
+//   Category.hasMany(Product, { foreignKey: "categoryId" });
+//   Product.belongsTo(Category, { foreignKey: "categoryId" });
 
-  Product.hasMany(Variant, { foreignKey: "productId" });
-  Variant.belongsTo(Product, { foreignKey: "productId" });
+//   Product.hasMany(Variant, { foreignKey: "productId" });
+//   Variant.belongsTo(Product, { foreignKey: "productId" });
 
-  Option.hasMany(OptionValue, { foreignKey: "optionId" });
-  OptionValue.belongsTo(Option, { foreignKey: "optionId" });
+//   Option.hasMany(OptionValue, { foreignKey: "optionId" });
+//   OptionValue.belongsTo(Option, { foreignKey: "optionId" });
 
-  Order.hasMany(OrderLine, { foreignKey: "orderId" });
-  OrderLine.belongsTo(Order, { foreignKey: "orderId" });
+//   Order.hasMany(OrderLine, { foreignKey: "orderId" });
+//   OrderLine.belongsTo(Order, { foreignKey: "orderId" });
 
-  Product.hasMany(OrderLine, { foreignKey: "productId" });
-  OrderLine.belongsTo(Product, { foreignKey: "productId" });
+//   Variant.hasMany(OrderLine, { foreignKey: "variantId" });
+//   OrderLine.belongsTo(Variant, { foreignKey: "variantId" });
 
-  // Many-to-Many
-  Product.belongsToMany(Option, {
-    through: ProductOption,
-    foreignKey: "productId",
-  });
-  Option.belongsToMany(Product, {
-    through: ProductOption,
-    foreignKey: "optionId",
-  });
+//   // Many-to-Many
+//   Product.belongsToMany(Option, {
+//     through: ProductOption,
+//     foreignKey: "productId",
+//   });
+//   Option.belongsToMany(Product, {
+//     through: ProductOption,
+//     foreignKey: "optionId",
+//   });
 
-  OrderLine.belongsToMany(OptionValue, {
-    through: OrderLineOptionValue,
-    foreignKey: "orderLineId",
-  });
-  OptionValue.belongsToMany(OrderLine, {
-    through: OrderLineOptionValue,
-    foreignKey: "optionValueId",
-  });
+//   OrderLine.belongsToMany(OptionValue, {
+//     through: OrderLineOptionValue,
+//     foreignKey: "orderLineId",
+//   });
+//   OptionValue.belongsToMany(OrderLine, {
+//     through: OrderLineOptionValue,
+//     foreignKey: "optionValueId",
+//   });
 
-  // ***** SYNC DB WITH TABLES *****
-  await sequelize.sync({ alter: true });
+//   // ***** SYNC DB WITH TABLES *****
+//   await sequelize.sync({ alter: true });
 
-  // ***** SEED DB *****
-  // await createUsers(User);
-  // await createCategories(Category);
-  // await createProducts(Product);
-  // await createVariants(Variant);
-  // await createOptions(Option);
-  // await createOptionValues(OptionValue);
-  // await createProductOptions(ProductOption);
+//   // ***** SEED DB *****
+//   // await createUsers(User);
+//   await createCategories(Category);
+//   await createProducts(Product);
+//   await createVariants(Variant);
+//   await createOptions(Option);
+//   await createOptionValues(OptionValue);
+//   await createProductOptions(ProductOption);
+// })();
+
+module.exports = {
+  User,
+  Product,
+  Variant,
+  Order,
+  OrderLine,
+  OrderLineOptionValue,
 };
-// ();
-
-module.exports = { User, Product, Order, OrderLine };

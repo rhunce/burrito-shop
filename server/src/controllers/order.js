@@ -3,6 +3,8 @@ const {
   getOrder,
   createOrder,
   createOrderLine,
+  createOrderLineOptionValue,
+  updateOrderTotalPrice,
 } = require("../models/utils.js");
 
 // GET
@@ -15,30 +17,24 @@ orderRouter.get("/:orderId", async (req, res) => {
 // POST
 orderRouter.post("/", async (req, res) => {
   // Create Order with UNFULFILLED status
-  const { id: orderId } = await createOrder();
+  const order = await createOrder();
 
-  // [
-  //   { productId: 1, quantity: 3, options: [ 1, 3, 6, 7, 12, 13 ] },
-  //   { productId: 1, quantity: 2, options: [ 1, 3, 6, 7, 12, 13 ] },
-  //   { productId: 3, quantity: 3, options: [ 3, 6, 7, 12, 13 ] }
-  // ]
   // Create Order Lines
   const orderLinesInfo = req.body;
   const orderLines = [];
-  for (const { productId, quantity, options } of orderLinesInfo) {
-    const orderLine = await createOrderLine(productId, quantity, orderId);
+  for (const { variantId, quantity, options } of orderLinesInfo) {
+    const orderLine = await createOrderLine(variantId, quantity, order.id);
     orderLine.optionValues = options;
     orderLines.push(orderLine);
   }
 
-  console.log("orderLines: ", orderLines);
   // Create OrderLine_OptionValue Lines
-  // TODO
+  await createOrderLineOptionValue(orderLines);
 
   // Update Order totalPrice Field
-  // TODO
+  await updateOrderTotalPrice(order, orderLines);
 
-  res.json("order");
+  res.json(order);
 });
 
 module.exports = { orderRouter };

@@ -1,4 +1,11 @@
-const { User, Product, Order, OrderLine } = require("../models/index.js");
+const {
+  User,
+  Product,
+  Variant,
+  Order,
+  OrderLine,
+  OrderLineOptionValue,
+} = require("../models/index.js");
 
 // USERS UTILS
 async function createUser(userData) {
@@ -34,14 +41,45 @@ async function createOrder() {
   return order;
 }
 
-async function createOrderLine(productId, quantity, orderId) {
+async function createOrderLine(variantId, quantity, orderId) {
   const orderLinePayload = {
-    productId,
+    variantId,
     orderId,
     quantity,
   };
   const orderLine = await OrderLine.create(orderLinePayload);
   return orderLine;
+}
+
+async function createOrderLineOptionValue(orderLines) {
+  for (const orderLine of orderLines) {
+    const { dataValues, optionValues } = orderLine;
+    const orderLineId = dataValues.id;
+    for (const optionValueId of optionValues) {
+      await OrderLineOptionValue.create({
+        orderLineId,
+        optionValueId,
+      });
+    }
+  }
+}
+
+async function updateOrderTotalPrice(order, orderLines) {
+  const totalPrice = await getTotalPriceFromOrderLines(orderLines);
+  await order.update({ totalPrice });
+}
+
+// HELPERS
+async function getTotalPriceFromOrderLines(orderLines) {
+  let totalPrice = 0;
+  for (const { dataValues: orderLine } of orderLines) {
+    const { variantId, quantity } = orderLine;
+    const { dataValues: variant } = await Variant.findByPk(variantId);
+    const lineTotalPrice = parseFloat(variant.price) * quantity;
+    totalPrice += lineTotalPrice;
+  }
+
+  return totalPrice;
 }
 
 module.exports = {
@@ -52,4 +90,6 @@ module.exports = {
   getOrder,
   createOrder,
   createOrderLine,
+  createOrderLineOptionValue,
+  updateOrderTotalPrice,
 };
