@@ -1,12 +1,12 @@
 const { Sequelize, Model, DataTypes } = require("sequelize");
-const {
-  createUsers,
-  createProducts,
-  createVariants,
-  createCategories,
-  createOptions,
-  createOptionValues,
-} = require("./utils.js");
+// const {
+//   createUsers,
+//   createProducts,
+//   createVariants,
+//   createCategories,
+//   createOptions,
+//   createOptionValues,
+// } = require("./seed/utils.js");
 
 const sequelize = new Sequelize("burrito_shop", "postgres", "postgres", {
   host: "localhost",
@@ -28,7 +28,7 @@ User.init(
       type: DataTypes.ENUM("MANAGER", "EMPLOYEE"),
       defaultValue: "EMPLOYEE",
     },
-    // TODO: PASSWORD
+    password: { type: DataTypes.STRING, allowNull: false },
   },
   { sequelize }
 );
@@ -132,7 +132,7 @@ OrderLine.init(
 //   OptionValue.belongsToMany(OrderLine, { through: "OrderLine_OptionValue" });
 
 //   // ***** SYNC DB WITH TABLES *****
-//   await sequelize.sync();
+//   await sequelize.sync({ alter: true });
 
 //   // ***** SEED DB *****
 //   await createUsers(User);
@@ -142,3 +142,5 @@ OrderLine.init(
 //   await createOptions(Option);
 //   await createOptionValues(OptionValue);
 // })();
+
+module.exports = { User };

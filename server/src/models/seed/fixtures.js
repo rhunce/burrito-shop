@@ -4,12 +4,14 @@ const USERS_DATA = [
     lastName: "Hunce",
     email: "hunce18c@gmail.com",
     type: "MANAGER",
+    password: "admin",
   },
   {
     firstName: "Ray",
     lastName: "Hunt",
     email: "hunt18c@msn.com",
     type: "EMPLOYEE",
+    password: "admin",
   },
 ];
 

@@ -1,12 +1,17 @@
 const userRouter = require("express").Router();
+const { createUser } = require("../models/utils.js");
+const bcrypt = require("bcrypt");
+
+const SALT_ROUNDS = 10;
 
 userRouter.post("/create", async (req, res) => {
   const userData = req.body;
-  console.log("userData: ", userData);
-  res.json(userData);
-  //   const { User } = require("../models/user.js");
-  //   const newUser = await User.create(userData);
-  //   console.log("newUser: ", newUser);
+  const { password } = userData;
+  bcrypt.hash(password, SALT_ROUNDS, async function (err, hash) {
+    userData.password = hash;
+    const newUser = await createUser(userData);
+    res.json(newUser);
+  });
 });
 
 module.exports = { userRouter };
