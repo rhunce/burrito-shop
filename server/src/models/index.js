@@ -19,7 +19,7 @@ class User extends Model {}
 User.init(
   {
     email: {
-      primaryKey: true,
+      unique: true,
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -185,12 +185,12 @@ OrderLineOptionValue.init(
 
 //   // ***** SEED DB *****
 //   // await createUsers(User);
-//   await createCategories(Category);
-//   await createProducts(Product);
-//   await createVariants(Variant);
-//   await createOptions(Option);
-//   await createOptionValues(OptionValue);
-//   await createProductOptions(ProductOption);
+//   // await createCategories(Category);
+//   // await createProducts(Product);
+//   // await createVariants(Variant);
+//   // await createOptions(Option);
+//   // await createOptionValues(OptionValue);
+//   // await createProductOptions(ProductOption);
 // })();
 
 module.exports = {

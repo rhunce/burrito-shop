@@ -14,6 +14,16 @@ async function createUser(userData) {
   return newUser;
 }
 
+async function getUsers() {
+  const users = await User.findAll();
+  return users;
+}
+
+async function getUser(userId) {
+  const user = await User.findByPk(userId);
+  return user;
+}
+
 // PRODUCTS UTILS
 async function getProducts() {
   const products = await Product.findAll();
@@ -106,4 +116,6 @@ module.exports = {
   updateOrderTotalPrice,
   getCategories,
   getCategory,
+  getUsers,
+  getUser,
 };
